@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Main page</title>
+</head>
+<body>
+
+    {% if user.is_authenticated %}
+        <h2>Hello, my dear friend {{ user.username }}!!!</h2>
+    {% else %}
+         <h1>Hello, this is first page our store</h1>
+    {% endif %}
+    <h3>Login to <a href="{% url 'login' %}">system</a></h3>
+    <h3>Or<a href="{% url 'register' %}"> register</a></h3>
+    <h3><a href="{% url 'product_list' %}">products</a></h3>
+</body>
+</html>
