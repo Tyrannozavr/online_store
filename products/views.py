@@ -3,6 +3,7 @@ from django.shortcuts import HttpResponse
 from django.views.generic import ListView, DetailView
 from . import models
 from . import forms
+import django.forms
 
 class Products(ListView):
     model = models.Products
@@ -23,5 +24,11 @@ class ProductsDetail(DetailView):
         # print(choices)
         # form.choices = choices
         context['discount'] = form
-        print(context['discount'].choices)
+        class TwoForm(django.forms.Form):
+            choice = (('1', 'test'),
+                      ('2', 'test'))
+            choice = [(i.name, str(i.discount)) for i in product.discount.all()]
+            test = django.forms.ChoiceField(choices=choice)
+        # print(context['discount'].choices)
+        context['form_two'] = TwoForm
         return context
