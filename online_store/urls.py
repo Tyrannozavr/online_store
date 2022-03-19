@@ -26,4 +26,5 @@ urlpatterns = [
     path('discounts/', discounts, name='discounts'),
     path('dicsount/<int:pk>/', discount_detail, name='discount_detail'),
     path('discount/create/', discount_create, name='discount_create'),
+    path('report/', include('report.urls')),
 ]
