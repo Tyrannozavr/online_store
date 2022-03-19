@@ -1,14 +1,14 @@
-from django.shortcuts import render, HttpResponse, Http404, HttpResponseRedirect, reverse
+from django.shortcuts import render, HttpResponseRedirect, reverse
 from django.contrib.auth.models import User
-from .forms import Registration
 from django.db import IntegrityError
 from products.models import Discount
-from django.contrib.auth.decorators import permission_required, login_required
+from django.contrib.auth.decorators import permission_required
 from .forms import *
-
+from django.core.exceptions import ObjectDoesNotExist
 
 def index(request):
     return render(request, 'online_store/index.html')
+
 
 def register(request):
     form = Registration
@@ -55,24 +55,29 @@ def discount_create(request):
         coverage = int(request.POST['coverage'])
         products = int(request.POST['products'])
         discount = Discount.objects.create(name=name, discount=size)
-        # print(name, size, coverage, products)
 
         if coverage:  #coverage can haves values 1 or 0, 1 mean that coverage is category, 0 that coverage is product
-            category = Category.objects.get(id=products)
-            products = category.products_set.all()
+            try:
+                category = Category.objects.get(id=products)
+                products = category.products_set.all()
+            except ObjectDoesNotExist:
+                return render(request, 'online_store/discount_create.html', {'message': 'you mistake, this is does not available category'})
 
             for product in products:
                 discounts = list(product.discount.all())
                 discounts.append(discount)
-                print(discounts, type(discount))
                 product.discount.set(discounts)
-                product.save()
-            # products.update(*[discounts = ])
-            # products.update(title='name')
-            # print(products)
 
-        Discount.objects.all()
+        else:
+            try:
+                product = Products.objects.get(id=products)
+            except ObjectDoesNotExist:
+                return render(request, 'online_store/discount_create.html', {'message': 'you mistake, this is does not available product'})
 
+
+            discounts = list(product.discount.all())
+            discounts.append(discount)
+            product.discount.set(discounts)
 
     form = CreateDiscount
     return render(request, 'online_store/discount_create.html', {'form': form})
