@@ -24,5 +24,6 @@ urlpatterns = [
     path('authentication/register', register, name='register'),
     path('products/', include('products.urls')),
     path('discounts/', discounts, name='discounts'),
-    path('dicsount/<int:pk>/', discount_detail, name='discount_detail')
+    path('dicsount/<int:pk>/', discount_detail, name='discount_detail'),
+    path('discount/create/', discount_create, name='discount_create'),
 ]
