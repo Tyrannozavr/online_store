@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>discount_detail</title>
+</head>
+<body>
+    <h1>discount name: {{ discount.name }}</h1>
+    <h2>discounted products</h2>
+    {% for product in products %}
+        {{ product }}
+    {% endfor %}
+</body>
+</html>

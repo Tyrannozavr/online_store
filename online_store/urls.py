@@ -22,5 +22,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('authentication', include('django.contrib.auth.urls')),
     path('authentication/register', register, name='register'),
-    path('products/', include('products.urls'))
+    path('products/', include('products.urls')),
+    path('discounts/', discounts, name='discounts'),
+    path('dicsount/<int:pk>/', discount_detail, name='discount_detail')
 ]

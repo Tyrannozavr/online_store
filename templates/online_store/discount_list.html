@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Discounts</title>
+</head>
+<body>
+<h1>Available dicsounts</h1>
+<table>
+    {% for discount in discounts %}
+        <tr>
+            <td><a href="{% url 'discount_detail' pk=discount.pk %}">{{ discount.name }}</a>:</td>
+            <td>{{ discount.discount }}</td>
+        </tr>
+    {% endfor %}
+</table>
+
+
+</body>
+</html>
