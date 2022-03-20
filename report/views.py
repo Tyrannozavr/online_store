@@ -17,16 +17,24 @@ class Purchases(ListAPIView):
     serializer_class = PurchasesSerializer
     queryset = models.Purchases.objects.all()
 
+
     def list(self, request, *args, **kwargs):
         queryset = self.get_queryset()
+        # queryset = models.Purchases.objects.raw('SELECT "products_purchases"."id", "datetime" FROM products_purchases;')
         serializer = PurchasesSerializer(queryset, many=True)
         # serializer = self.get_serializer()(queryset, many=True)
         return Response(serializer.data)
 
     def get_queryset(self):
         return models.Purchases.objects.all()
-    # permission_classes = AllowAny
-    # def get_queryset(self):
-    #     a = models.Purchases.objects.all()
-    #     return a
+        # return models.Purchases.objects.raw('\
+        #     SELECT "id", "products_purchases"."id" * 2 AS ADDED FROM products_purchases;\
+        # ')
+
+'''Время покупки
+Товар
+Цена
+Скидка (если была)
+Процент скидки (если была скидка)
+'''
 
