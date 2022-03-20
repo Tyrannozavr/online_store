@@ -2,10 +2,8 @@ from rest_framework import serializers
 from products import models
 
 class PurchasesSerializer(serializers.ModelSerializer):
-    # new_field = serializers.SerializerMethodField('name')
-    #
-    # def name(self, foo):
-    #     return foo.count
+    time = serializers.TimeField()
+    size_discount = serializers.IntegerField()
     new_count = serializers.CharField(read_only=True)
     product = serializers.SlugRelatedField(many=False, read_only=True, slug_field='title')
     discount = serializers.SlugRelatedField(many=False, read_only=True, slug_field='name')
@@ -13,6 +11,4 @@ class PurchasesSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Purchases
-        # fields = ('count', 'product', 'new_count')
-        fields = '__all__'
-
+        fields = ['product', 'discount', 'price', 'new_count', 'size_discount', 'time']
