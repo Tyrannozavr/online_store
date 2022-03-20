@@ -2,18 +2,21 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
-class Discount(models.Model):
-    name = models.CharField(max_length=50, unique=True)
-    discount = models.IntegerField(default=0)
 
-    def __str__(self):
-        return f'{self.name}: {self.discount}'
 
 class Category(models.Model):
     title = models.CharField(max_length=50)
 
     def __str__(self):
         return self.title
+
+class Discount(models.Model):
+    name = models.CharField(max_length=50, unique=True)
+    discount = models.IntegerField(default=0)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True)
+
+    def __str__(self):
+        return f'{self.name}: {self.discount}'
 
 class Products(models.Model):
     title = models.CharField(max_length=50)

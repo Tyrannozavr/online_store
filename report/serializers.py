@@ -12,3 +12,11 @@ class PurchasesSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Purchases
         fields = ['product', 'discount', 'price', 'new_count', 'size_discount', 'time']
+
+
+class CategorySerializer(serializers.ModelSerializer):
+    name = serializers.CharField()
+    count = serializers.CharField()
+    class Meta:
+        model = models.Purchases
+        fields = ['name', 'count']

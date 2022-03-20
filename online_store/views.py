@@ -57,8 +57,11 @@ def discount_create(request):
         discount = Discount.objects.create(name=name, discount=size)
 
         if coverage:  #coverage can haves values 1 or 0, 1 mean that coverage is category, 0 that coverage is product
+
             try:
                 category = Category.objects.get(id=products)
+                discount.category = category
+                discount.save()
                 products = category.products_set.all()
             except ObjectDoesNotExist:
                 return render(request, 'online_store/discount_create.html', {'message': 'you mistake, this is does not available category'})

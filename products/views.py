@@ -18,7 +18,6 @@ class ProductsDetail(LoginRequiredMixin, DetailView):
         product = self.get_object()
         if request.POST:
             datetime = timezone.now()
-            print(datetime)
             count = request.POST['count']
             discount = models.Discount.objects.get(name=request.POST['discount'])
             user = request.user

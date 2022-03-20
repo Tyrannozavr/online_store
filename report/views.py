@@ -3,20 +3,21 @@ from rest_framework.decorators import api_view
 from rest_framework.reverse import reverse
 from rest_framework.response import Response
 from rest_framework.generics import ListAPIView
-from .serializers import PurchasesSerializer
+from .serializers import *
 from products import models
 
 @api_view(['GET'])
 def index(request):
     return Response({
-        'purchases': reverse('purchases', request=request)
+        'daily report': reverse('purchases', request=request),
+        'categorys report': reverse('categorys', request=request),
     })
 class Purchases(ListAPIView):
     serializer_class = PurchasesSerializer
 
     def list(self, request, *args, **kwargs):
         queryset = self.get_queryset()
-        serializer = PurchasesSerializer(queryset, many=True)
+        serializer = self.serializer_class(queryset, many=True)
         return Response(serializer.data)
 
     def get_queryset(self):
@@ -27,3 +28,21 @@ class Purchases(ListAPIView):
             INNER JOIN products_discount on products_purchases.discount_id = products_discount.id
             WHERE DATE(datetime)  = CURRENT_DATE;
             ''')
+
+class Category_report(ListAPIView):
+    serializer_class = CategorySerializer
+
+    def list(self, request, *args, **kwarhs):
+        queryset = self.get_queryset()
+        serializers = self.serializer_class(queryset, many=True)
+        return Response(serializers.data)
+
+    def get_queryset(self):
+        return models.Purchases.objects.raw('''
+        SELECT products_purchases.id, name, COUNT(title)  FROM products_purchases
+        INNER JOIN products_products on products_purchases.product_id = products_products.id
+        INNER JOIN products_discount on products_purchases.discount_id = products_discount.id
+        WHERE products_products.category_id = 1
+        GROUP BY products_purchases.discount_id;
+        ''')
+
