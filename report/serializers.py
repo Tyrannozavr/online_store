@@ -15,7 +15,9 @@ class PurchasesSerializer(serializers.ModelSerializer):
 
 
 class CategorySerializer(serializers.ModelSerializer):
-    count = serializers.CharField()
+    category = serializers.CharField()
+    discount_name = serializers.CharField()
+    average = serializers.CharField()
     class Meta:
         model = models.Purchases
-        fields = ['count']
+        fields = ['category', 'discount_name', 'average']

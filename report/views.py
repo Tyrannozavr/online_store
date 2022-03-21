@@ -39,10 +39,12 @@ class Category_report(ListAPIView):
 
     def get_queryset(self):
         return models.Purchases.objects.raw('''
-    SELECT id, AVG(count) AS count FROM (
-    SELECT products_purchases.id, COUNT(title) AS count FROM products_purchases
-    INNER JOIN products_products on products_purchases.product_id = products_products.id
-    WHERE discount_id = 37
-    GROUP BY DATE(datetime));
+        SELECT products_purchases.id, products_category.title AS category, pd.name AS discount_name,
+               sum(count)/ (count(DISTINCT DATE(datetime))+0.0) AS average FROM products_purchases
+        JOIN products_products on products_purchases.product_id = products_products.id
+        JOIN products_category on products_products.category_id = products_category.id
+        JOIN products_discount pd on products_purchases.discount_id = pd.id
+        WHERE pd.category_id OR pd.name = 'default'
+        GROUP BY category, pd.name;
         ''')
 
