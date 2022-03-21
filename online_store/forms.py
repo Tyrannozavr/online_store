@@ -1,11 +1,13 @@
 from django import forms
-from products.models import Products, Category
+from products.models import Category, Products
+
 
 class Registration(forms.Form):
     email = forms.EmailField(widget=forms.EmailInput)
     username = forms.CharField()
     password = forms.CharField(widget=forms.PasswordInput)
     password_again = forms.CharField(widget=forms.PasswordInput)
+
 
 class CreateDiscount(forms.Form):
     choice = [(i.id, i.title) for i in Products.objects.all()]

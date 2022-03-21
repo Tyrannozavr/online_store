@@ -1,5 +1,6 @@
-from rest_framework import serializers
 from products import models
+from rest_framework import serializers
+
 
 class PurchasesSerializer(serializers.ModelSerializer):
     time = serializers.TimeField()

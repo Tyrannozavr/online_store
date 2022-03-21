@@ -1,10 +1,12 @@
 from django.shortcuts import render
-from rest_framework.decorators import api_view
-from rest_framework.reverse import reverse
-from rest_framework.response import Response
-from rest_framework.generics import ListAPIView
-from .serializers import *
 from products import models
+from rest_framework.decorators import api_view
+from rest_framework.generics import ListAPIView
+from rest_framework.response import Response
+from rest_framework.reverse import reverse
+
+from .serializers import *
+
 
 @api_view(['GET'])
 def index(request):

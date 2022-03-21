@@ -1,10 +1,11 @@
-from django.views.generic import ListView, DetailView
-from . import models
 import django.forms
-from .models import Purchases
-from django.utils import timezone
-from django.shortcuts import redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import redirect
+from django.utils import timezone
+from django.views.generic import DetailView, ListView
+
+from . import models
+from .models import Purchases
 
 
 class Products(ListView):

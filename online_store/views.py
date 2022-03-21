@@ -1,10 +1,12 @@
-from django.shortcuts import render, HttpResponseRedirect, reverse
-from django.contrib.auth.models import User
-from django.db import IntegrityError
-from products.models import Discount
 from django.contrib.auth.decorators import permission_required
-from .forms import *
+from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
+from django.db import IntegrityError
+from django.shortcuts import HttpResponseRedirect, render, reverse
+from products.models import Discount
+
+from .forms import *
+
 
 def index(request):
     return render(request, 'online_store/index.html')
@@ -33,12 +35,14 @@ def register(request):
                 "message": "Username already taken."
             })
         return HttpResponseRedirect(reverse("index"))
-    return render(request, 'registration/register.html', {'form':form})
+    return render(request, 'registration/register.html', {'form': form})
+
 
 @permission_required(perm='is_staff')
 def discounts(request):
     discounts_list = Discount.objects.all()
     return render(request, 'online_store/discount_list.html', {'discounts': discounts_list})
+
 
 @permission_required(perm='is_staff')
 def discount_detail(request, pk):
@@ -46,6 +50,7 @@ def discount_detail(request, pk):
     products = discount.products_set.all()
     products = ', '.join([i.title for i in products])
     return render(request, 'online_store/discount_detail.html', {'discount': discount, 'products': products})
+
 
 @permission_required(perm='is_staff')
 def discount_create(request):
@@ -56,7 +61,7 @@ def discount_create(request):
         products = int(request.POST['products'])
         discount = Discount.objects.create(name=name, discount=size)
 
-        if coverage:  #coverage can haves values 1 or 0, 1 mean that coverage is category, 0 that coverage is product
+        if coverage:   #coverage can haves values 1 or 0, 1 mean that coverage is category, 0 that coverage is product
 
             try:
                 category = Category.objects.get(id=products)
@@ -64,7 +69,8 @@ def discount_create(request):
                 discount.save()
                 products = category.products_set.all()
             except ObjectDoesNotExist:
-                return render(request, 'online_store/discount_create.html', {'message': 'you mistake, this is does not available category'})
+                return render(request, 'online_store/discount_create.html',
+                              {'message': 'you mistake, this is does not available category'})
 
             for product in products:
                 discounts = list(product.discount.all())
@@ -75,9 +81,8 @@ def discount_create(request):
             try:
                 product = Products.objects.get(id=products)
             except ObjectDoesNotExist:
-                return render(request, 'online_store/discount_create.html', {'message': 'you mistake, this is does not available product'})
-
-
+                return render(request, 'online_store/discount_create.html',
+                              {'message': 'you mistake, this is does not available product'})
             discounts = list(product.discount.all())
             discounts.append(discount)
             product.discount.set(discounts)
