@@ -21,3 +21,12 @@ class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Purchases
         fields = ['category', 'discount_name', 'average']
+
+class ProductSerializer(serializers.ModelSerializer):
+    product = serializers.CharField()
+    name = serializers.CharField()
+    average = serializers.CharField()
+
+    class Meta:
+        model = models.Purchases
+        fields = ['product', 'name', 'average']
